@@ -1,7 +1,7 @@
 import { useWallet } from '@solana/wallet-adapter-react';
 import React from 'react';
 
-export default ({text, onClick}) => {
+export const PrettyButton = ({text, onClick}) => {
 
     const wallet = useWallet();
 
@@ -20,3 +20,5 @@ export default ({text, onClick}) => {
     </div>
     )
 }
+
+export default PrettyButton;

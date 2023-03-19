@@ -3,6 +3,7 @@ import { FC } from "react";
 import { SignMessage } from '../../components/SignMessage';
 import { SendTransaction } from '../../components/SendTransaction';
 import { SendVersionedTransaction } from '../../components/SendVersionedTransaction';
+import { Bank } from "components/Bank";
 
 export const BasicsView: FC = ({ }) => {
 
@@ -12,10 +13,7 @@ export const BasicsView: FC = ({ }) => {
         <h1 className="text-center text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-br from-indigo-500 to-fuchsia-500 mt-10 mb-8">
           Basics
         </h1>
-        {/* CONTENT GOES HERE */}
-        <div className="text-center">
-          <SendTransaction />
-        </div>
+        <Bank />
       </div>
     </div>
   );

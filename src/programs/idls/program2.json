@@ -1,133 +1,104 @@
 {
-    "version": "0.1.0",
-    "name": "project2",
-    "instructions": [
-      {
-        "name": "create",
-        "accounts": [
-          {
-            "name": "calculator",
-            "isMut": true,
-            "isSigner": true
-          },
-          {
-            "name": "user",
-            "isMut": true,
-            "isSigner": true
-          },
-          {
-            "name": "systemProgram",
-            "isMut": false,
-            "isSigner": false
-          }
-        ],
-        "args": [
-          {
-            "name": "initMessage",
-            "type": "string"
-          }
-        ]
-      },
-      {
-        "name": "sum",
-        "accounts": [
-          {
-            "name": "calculator",
-            "isMut": true,
-            "isSigner": false
-          }
-        ],
-        "args": [
-          {
-            "name": "num1",
-            "type": "i64"
-          },
-          {
-            "name": "num2",
-            "type": "i64"
-          }
-        ]
-      },
-      {
-        "name": "subtract",
-        "accounts": [
-          {
-            "name": "calculator",
-            "isMut": true,
-            "isSigner": false
-          }
-        ],
-        "args": [
-          {
-            "name": "num1",
-            "type": "i64"
-          },
-          {
-            "name": "num2",
-            "type": "i64"
-          }
-        ]
-      },
-      {
-        "name": "multiply",
-        "accounts": [
-          {
-            "name": "calculator",
-            "isMut": true,
-            "isSigner": false
-          }
-        ],
-        "args": [
-          {
-            "name": "num1",
-            "type": "i64"
-          },
-          {
-            "name": "num2",
-            "type": "i64"
-          }
-        ]
-      },
-      {
-        "name": "divide",
-        "accounts": [
-          {
-            "name": "calculator",
-            "isMut": true,
-            "isSigner": false
-          }
-        ],
-        "args": [
-          {
-            "name": "num1",
-            "type": "i64"
-          },
-          {
-            "name": "num2",
-            "type": "i64"
-          }
-        ]
-      }
-    ],
-    "accounts": [
-      {
-        "name": "Calculator",
-        "type": {
-          "kind": "struct",
-          "fields": [
-            {
-              "name": "greeting",
-              "type": "string"
-            },
-            {
-              "name": "result",
-              "type": "i64"
-            }
-          ]
+  "version": "0.1.0",
+  "name": "solanapdas",
+  "instructions": [
+    {
+      "name": "create",
+      "accounts": [
+        {
+          "name": "bank",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "user",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "systemProgram",
+          "isMut": false,
+          "isSigner": false
         }
-      }
-    ],
-    "metadata": {
-      "address": "7Y7yVVvBBgGh4Sd1gJ1fsoEtPk2maghRANSjN3yMnL5B"
+      ],
+      "args": [
+        {
+          "name": "name",
+          "type": "string"
+        }
+      ]
+    },
+    {
+      "name": "deposit",
+      "accounts": [
+        {
+          "name": "bank",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "user",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "systemProgram",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": [
+        {
+          "name": "amount",
+          "type": "u64"
+        }
+      ]
+    },
+    {
+      "name": "withdraw",
+      "accounts": [
+        {
+          "name": "bank",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "user",
+          "isMut": true,
+          "isSigner": true
+        }
+      ],
+      "args": [
+        {
+          "name": "amount",
+          "type": "u64"
+        }
+      ]
     }
+  ],
+  "accounts": [
+    {
+      "name": "Bank",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "name",
+            "type": "string"
+          },
+          {
+            "name": "balance",
+            "type": "u64"
+          },
+          {
+            "name": "owner",
+            "type": "publicKey"
+          }
+        ]
+      }
+    }
+  ],
+  "metadata": {
+    "address": "9fiT6J84RiJzuyLmazqMttS1DbQfc8nD48qYmh8fsUVS"
   }
+}
