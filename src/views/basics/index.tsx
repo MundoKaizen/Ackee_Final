@@ -14,9 +14,7 @@ export const BasicsView: FC = ({ }) => {
         </h1>
         {/* CONTENT GOES HERE */}
         <div className="text-center">
-          <SignMessage />
           <SendTransaction />
-          <SendVersionedTransaction />
         </div>
       </div>
     </div>
