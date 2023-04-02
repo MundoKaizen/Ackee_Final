@@ -1,69 +1,77 @@
 // Next, React
-import { FC, useEffect, useState } from 'react';
-import Link from 'next/link';
+import React, { FC, useEffect, useState } from 'react';
 
-// Wallet
+// Utils
 import { useWallet, useConnection } from '@solana/wallet-adapter-react';
+import { PublicKey } from '@solana/web3.js';
 
 // Components
-import { RequestAirdrop } from '../../components/RequestAirdrop';
-import pkg from '../../../package.json';
+import PrettyButton from 'components/PrettyButton';
+
+//Constants
+import { Organism as _Organism } from "../../models/types";
 
 // Store
 import useUserSOLBalanceStore from '../../stores/useUserSOLBalanceStore';
+import Organism from 'components/Organism';
 
-export const HomeView: FC = ({ }) => {
+
+export const HomeView: React.FC = ({ }) => {
+
   const wallet = useWallet();
   const { connection } = useConnection();
 
-  const balance = useUserSOLBalanceStore((s) => s.balance)
-  const { getUserSOLBalance } = useUserSOLBalanceStore()
+  const [organisms, setOrganisms] = React.useState([{
+    size: 10,
+    address: new PublicKey("6iQjVp7faMJWgtDnJBXqr4LMyTJNxqmxhiPE5sDfhbqB"),
+    creatorAddress: new PublicKey("6iQjVp7faMJggtDnJBXqr4LMyTJNxqmxhiPE5sDfhbqB"),
+    birthday: "02/02/2020",
+    coords: {x: 45, y: 55}
+  }] as _Organism[]);
 
-  useEffect(() => {
-    if (wallet.publicKey) {
-      console.log(wallet.publicKey.toBase58())
-      getUserSOLBalance(wallet.publicKey, connection)
-    }
-  }, [wallet.publicKey, connection, getUserSOLBalance])
+  React.useEffect(() => {
+    // todo retrieve organism list data from main program's main pda for storing all created organisms
+  }, [])
+
+  // const { getUserSOLBalance } = useUserSOLBalanceStore()
+
+  // useEffect(() => {
+  //   if (wallet.publicKey) {
+  //     console.log(wallet.publicKey.toBase58())
+  //     getUserSOLBalance(wallet.publicKey, connection)
+  //   }
+  // }, [wallet.publicKey, connection, getUserSOLBalance])
+
+  const handleEvolve = (organism: _Organism) => {
+    // todo retieve the most recent block and read every single tx in it
+    // todo quantify each behaviour (number of txs, transfers, creations)
+    // todo hash this into xy coord changes and size changes
+    // todo update the organism's PDA data accordingly, then stub the change in UI
+  }
+
+  const createLife = () => {
+    // todo init a PDA from a program (also need to do) that is in charge of creating all life
+    // then place it somewhere on the board. The initial x/y coords will be derived from the current block number
+  }
 
   return (
 
-    <div className="md:hero mx-auto p-4">
-      <div className="md:hero-content flex flex-col">
-        <div className='mt-6'>
-        <div className='text-sm font-normal align-bottom text-right text-slate-600 mt-4'>v{pkg.version}</div>
-        <h1 className="text-center text-5xl md:pl-12 font-bold text-transparent bg-clip-text bg-gradient-to-br from-indigo-500 to-fuchsia-500 mb-4">
-          Solana Next
-        </h1>
+    <div className="h-full relative">
+        {organisms.map((organism: _Organism, i: number) => {
+          return (
+            <div key={i} className={`absolute`} >
+              <Organism handleEvolve={handleEvolve} organism={organism} />
+            </div>
+          )
+          
+        })}
+
+        <div className='absolute bottom-1 right-1'>
+          <PrettyButton
+            text="Create life"
+            onClick={createLife}
+          />
         </div>
-        <h4 className="md:w-full text-2x1 md:text-4xl text-center text-slate-300 my-2">
-          <p>Unleash the full power of blockchain with Solana and Next.js 13.</p>
-          <p className='text-slate-500 text-2x1 leading-relaxed'>Full-stack Solana applications made easy.</p>
-        </h4>
-        <div className="relative group">
-          <div className="absolute -inset-0.5 bg-gradient-to-r from-indigo-500 to-indigo-500 rounded-lg blur opacity-40 animate-tilt"></div>
-          <div className="max-w-md mx-auto mockup-code bg-primary border-2 border-[#5252529f] p-6 px-10 my-2">
-            <pre data-prefix=">">
-              <code className="truncate">{`npx create-solana-dapp <dapp-name>`} </code>
-            </pre>
-          </div>
-        </div>
-        <div className="flex flex-col mt-2">
-          <RequestAirdrop />
-          <h4 className="md:w-full text-2xl text-slate-300 my-2">
-          {wallet &&
-          <div className="flex flex-row justify-center">
-            <div>
-              {(balance || 0).toLocaleString()}
-              </div>
-              <div className='text-slate-600 ml-2'>
-                SOL
-              </div>
-          </div>
-          }
-          </h4>
-        </div>
-      </div>
     </div>
   );
 };

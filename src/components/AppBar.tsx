@@ -5,19 +5,28 @@ import React, { useState } from "react";
 import { useAutoConnect } from '../contexts/AutoConnectProvider';
 import NetworkSwitcher from './NetworkSwitcher';
 import NavElement from './nav-element';
+import { RequestAirdrop } from './RequestAirdrop';
+import PrettyButton from './PrettyButton';
 
 const WalletMultiButtonDynamic = dynamic(
   async () => (await import('@solana/wallet-adapter-react-ui')).WalletMultiButton,
   { ssr: false }
 );
 
-export const AppBar: React.FC = () => {
+interface Props {
+  toggleModal: (bool: boolean) => void
+}
+
+export const AppBar: React.FC<Props> = ({ toggleModal } : Props) => {
+
   const { autoConnect, setAutoConnect } = useAutoConnect();
   const [isNavOpen, setIsNavOpen] = useState(false);
+
+
   return (
     <div>
       {/* NavBar / Header */}
-      <div className="navbar flex h-20 flex-row md:mb-2 shadow-lg bg-black text-neutral-content border-b border-zinc-600 bg-opacity-66">
+      <div className="navbar flex h-20 flex-row shadow-lg bg-black text-neutral-content border-b border-zinc-600 bg-opacity-66">
         <div className="navbar-start align-items-center">
           <div className="hidden sm:inline w-22 h-22 md:p-2 ml-10">
             <Link href="https://solana.com" target="_blank" rel="noopener noreferrer" passHref className="text-secondary hover:text-white">
@@ -54,17 +63,19 @@ export const AppBar: React.FC = () => {
         {/* Wallet & Settings */}
         <div className="navbar-end">
           <div className="hidden md:inline-flex align-items-center justify-items gap-6">
-          <NavElement
-            label="Home"
-            href="/"
-            navigationStarts={() => setIsNavOpen(false)}
-          />
-          <NavElement
-            label="Basics"
-            href="/basics"
-            navigationStarts={() => setIsNavOpen(false)}
-          />
-          <WalletMultiButtonDynamic className="btn-ghost btn-sm rounded-btn text-lg mr-6 " />
+          <div className="flex flex-col mt-2">
+            <PrettyButton
+              text="How it works"
+              onClick={() => toggleModal(true)}
+              alwaysOn
+            />
+          </div>
+          <div className="flex flex-col mt-2">
+            <RequestAirdrop />
+          </div>
+          <div className="flex flex-col mt-2 items-center justify-center">
+            <WalletMultiButtonDynamic className="btn-ghost btn-sm rounded-btn text-lg mr-6 " />
+          </div>
         </div>
           <label
               htmlFor="my-drawer"

@@ -3,6 +3,7 @@ import { LAMPORTS_PER_SOL, TransactionSignature } from '@solana/web3.js';
 import { FC, useCallback } from 'react';
 import { notify } from "../utils/notifications";
 import useUserSOLBalanceStore from '../stores/useUserSOLBalanceStore';
+import PrettyButton from './PrettyButton';
 
 export const RequestAirdrop: FC = () => {
     const { connection } = useConnection();
@@ -41,13 +42,10 @@ export const RequestAirdrop: FC = () => {
                     <div className="m-1 absolute -inset-0.5 bg-gradient-to-r from-indigo-500 to-fuchsia-500 
                     rounded-lg blur opacity-20 group-hover:opacity-100 transition duration-1000 group-hover:duration-200 animate-tilt"></div>
             
-                        <button
-                            className="px-8 m-2 btn animate-pulse bg-gradient-to-br from-indigo-500 to-fuchsia-500 hover:from-white hover:to-purple-300 text-black"
+                        <PrettyButton
+                            text="Airdrop 1"
                             onClick={onClick}
-                            >
-                                <span>Airdrop 1 </span>
-                
-                        </button>
+                        />
                 </div>
         </div>
 
