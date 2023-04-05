@@ -23,26 +23,26 @@ export const HomeView: React.FC = ({ }) => {
 
   const wallet = useWallet();
   const { connection } = useConnection();
-  const program = anchor.workspace.Solanapdas as Program<Solanapdas>;
-  const programProvider = program.provider as anchor.AnchorProvider;
+  // const program = anchor.workspace.Solanapdas as Program<Solanapdas>;
+  // const programProvider = program.provider as anchor.AnchorProvider;
 
   const [organisms, setOrganisms] = React.useState([] as _Organism[]);
 
   React.useEffect(() => {
     (async () => {
-      const creatorAccount = await program.account.creator.fetch(wallet.publicKey);
-      console.log("Creator: ", creatorAccount);
+      // const creatorAccount = await program.account.creator.fetch(wallet.publicKey);
+      // console.log("Creator: ", creatorAccount);
     
-      creatorAccount.numOrganisms.forEach(async num => {
-        const [org] = findProgramAddressSync([
-          utils.bytes.utf8.encode("organism"),
-          utils.bytes.utf8.encode(creatorAccount.numOrganisms.toString()),
-          programProvider.wallet.publicKey.toBuffer()
-        ], program.programId) 
+      // (creatorAccount?.numOrganisms ?? []).forEach(async num => {
+      //   const [org] = findProgramAddressSync([
+      //     utils.bytes.utf8.encode("organism"),
+      //     utils.bytes.utf8.encode(creatorAccount.numOrganisms.toString()),
+      //     programProvider.wallet.publicKey.toBuffer()
+      //   ], program.programId) 
   
-        const organismAccount: _Organism = await program.account.organism.fetch(org);
-        setOrganisms(prev => [...prev, organismAccount]);
-      })
+      //   const organismAccount: _Organism = await program.account.organism.fetch(org);
+      //   setOrganisms(prev => [...prev, organismAccount]);
+      // })
     })();
   }, [])
 
