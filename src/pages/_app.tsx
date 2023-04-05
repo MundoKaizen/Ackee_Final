@@ -69,16 +69,16 @@ const App: FC<AppProps> = ({ Component, pageProps }) => {
                 </div>
                 <div className="mb-4">
                   <h2 className="font-semibold text-lg">How to use it: </h2>
-                  <p>Press the "Create life" button to initialize an organism (a PDA)</p>
+                  <p>Press the -Create life- button to initialize an organism (a PDA)</p>
                   <p>This will utilize a hashing function to decide where it will be born on the map</p>
-                  <p>Next, press "Evolve". This will gather the data of all the transactions that occured in the most previous block</p>
-                  <p>The type of transactions in that block will dictate the type, and magnitude, of organisms' behaviours</p>
+                  <p>Next, press -Evolve-. This will gather the data of all the transactions that occured in the most previous block</p>
+                  <p>The type of transactions in that block will dictate the type, and magnitude, of organisms behaviours</p>
                 </div>
                 <div className="mb-4">
                   <h2 className="font-semibold text-lg">Next steps: </h2>
                   <p>If I were to continue with this project, I would take steps to increase randomness</p>
-                  <p>Instead of pressing "Create life" to manually create an organism, all programs created on the chain would direclty translate into the creation of a new organism</p>
-                  <p>Instead of pressing "Evolve" to manually select a block to read from, every single block would automatically be read, and the display would update accordingly</p>
+                  <p>Instead of pressing -Create life- to manually create an organism, all programs created on the chain would direclty translate into the creation of a new organism</p>
+                  <p>Instead of pressing -Evolve- to manually select a block to read from, every single block would automatically be read, and the display would update accordingly</p>
                   <p>Essentially, all user input would be removed, and the art you see on the screen would become an untouched (yet constantly evolving) represenation of all the txs ever made on chain</p>
                 </div>
               </div>
