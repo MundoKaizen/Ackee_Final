@@ -1,9 +1,12 @@
 // Next, React
 import React, { FC, useEffect, useState } from 'react';
 
-// Utils
+// Web3
 import { useWallet, useConnection } from '@solana/wallet-adapter-react';
 import { PublicKey } from '@solana/web3.js';
+import * as anchor from '@project-serum/anchor';
+import { findProgramAddressSync } from '@project-serum/anchor/dist/cjs/utils/pubkey';
+import { utils, Program } from "@project-serum/anchor";
 
 // Components
 import PrettyButton from 'components/PrettyButton';
@@ -20,33 +23,38 @@ export const HomeView: React.FC = ({ }) => {
 
   const wallet = useWallet();
   const { connection } = useConnection();
+  const program = anchor.workspace.Solanapdas as Program<Solanapdas>;
+  const programProvider = program.provider as anchor.AnchorProvider;
 
-  const [organisms, setOrganisms] = React.useState([{
-    size: 10,
-    address: new PublicKey("6iQjVp7faMJWgtDnJBXqr4LMyTJNxqmxhiPE5sDfhbqB"),
-    creatorAddress: new PublicKey("6iQjVp7faMJggtDnJBXqr4LMyTJNxqmxhiPE5sDfhbqB"),
-    birthday: "02/02/2020",
-    coords: {x: 45, y: 55}
-  }] as _Organism[]);
+  const [organisms, setOrganisms] = React.useState([] as _Organism[]);
 
   React.useEffect(() => {
-    // todo retrieve organism list data from main program's main pda for storing all created organisms
+    (async () => {
+      const creatorAccount = await program.account.creator.fetch(wallet.publicKey);
+      console.log("Creator: ", creatorAccount);
+    
+      creatorAccount.numOrganisms.forEach(async num => {
+        const [org] = findProgramAddressSync([
+          utils.bytes.utf8.encode("organism"),
+          utils.bytes.utf8.encode(creatorAccount.numOrganisms.toString()),
+          programProvider.wallet.publicKey.toBuffer()
+        ], program.programId) 
+  
+        const organismAccount: _Organism = await program.account.organism.fetch(org);
+        setOrganisms(prev => [...prev, organismAccount]);
+      })
+    })();
   }, [])
-
-  // const { getUserSOLBalance } = useUserSOLBalanceStore()
-
-  // useEffect(() => {
-  //   if (wallet.publicKey) {
-  //     console.log(wallet.publicKey.toBase58())
-  //     getUserSOLBalance(wallet.publicKey, connection)
-  //   }
-  // }, [wallet.publicKey, connection, getUserSOLBalance])
 
   const handleEvolve = (organism: _Organism) => {
     // todo retieve the most recent block and read every single tx in it
     // todo quantify each behaviour (number of txs, transfers, creations)
     // todo hash this into xy coord changes and size changes
     // todo update the organism's PDA data accordingly, then stub the change in UI
+  }
+
+  const createCreator = () => {
+    
   }
 
   const createLife = () => {
@@ -66,10 +74,15 @@ export const HomeView: React.FC = ({ }) => {
           
         })}
 
-        <div className='absolute bottom-1 right-1'>
+        
+        <div className='absolute bottom-1 right-1 flex-row'>
           <PrettyButton
             text="Create life"
             onClick={createLife}
+          />
+          <PrettyButton
+            text="Create Creator"
+            onClick={createCreator}
           />
         </div>
     </div>
