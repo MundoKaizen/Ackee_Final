@@ -4,8 +4,10 @@ export type EndpointTypes = 'mainnet' | 'devnet' | 'localnet'
 
 export type Organism = {
     size: number,
-    coords: { x: number, y: number },
+    x: nunber,
+    y: number,
     address: PublicKey,
     creatorAddress: PublicKey,
-    birthday: string
+    birthday: string,
+    index: number
 }
