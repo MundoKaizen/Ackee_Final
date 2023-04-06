@@ -1,6 +1,5 @@
 # THIS DOESNT WORK YET
-# No need to stress out figuring how it works. Cause it doesnt. Im currently on an 8 hour flight working on it. When I land Ill be pushing again to update it. 
-
+# No need to stress out figuring how it works. Cause it doesnt. Im taking another vacation day off work tomorrow (half day) and Ill give it another go then.
 
 
 
