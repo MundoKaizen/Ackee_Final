@@ -24,7 +24,6 @@ const connection = new web3.Connection("https://api.devnet.solana.com", {
 const IDL = JSON.parse(JSON.stringify(programIdl))
 
 
-
 const getProvider = React.useCallback(() => {
   
   const wallet = useWallet();
@@ -69,7 +68,6 @@ export const HomeView: React.FC = ({ }) => {
 
   const getBlockhash = async (): Promise<String> => {
     const blockhash = await connection.getRecentBlockhash();
-
     return blockhash.blockhash;
   }
 
@@ -118,8 +116,6 @@ export const HomeView: React.FC = ({ }) => {
 
     <div className="h-full relative">
         {organisms.map((organism: _Organism, i: number) => {
-
-          console.log(organism.x);
           return (
             <div key={i} className={"absolute"} style={{top: organism.y, left: organism.x}}>
               <Organism handleEvolve={handleEvolve} organism={organism} />
