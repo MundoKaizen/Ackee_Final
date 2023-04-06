@@ -2,11 +2,11 @@
 import React, { FC, useEffect, useState } from 'react';
 
 // Web3
-import { useWallet, useConnection } from '@solana/wallet-adapter-react';
+import { useWallet } from '@solana/wallet-adapter-react';
 import { PublicKey } from '@solana/web3.js';
 import * as anchor from '@project-serum/anchor';
 import { findProgramAddressSync } from '@project-serum/anchor/dist/cjs/utils/pubkey';
-import { utils, Program } from "@project-serum/anchor";
+import { utils, Program, web3, AnchorProvider } from "@project-serum/anchor";
 import programIdl from "../../programs/idls/program.json"
 
 // Components
@@ -17,17 +17,35 @@ import PrettyButton from 'components/PrettyButton';
 import { Organism as _Organism } from "../../models/types";
 
 
-const { connection } = useConnection();
-const program = anchor.workspace.Solanapdas as Program<Solanapdas>;
-const programProvider = program.provider as anchor.AnchorProvider;
+const connection = new web3.Connection("https://api.devnet.solana.com", {
+  commitment: 'confirmed',
+  confirmTransactionInitialTimeout: 1000 * 5,
+});
 const IDL = JSON.parse(JSON.stringify(programIdl))
-const theProgram = new Program(IDL, programIdl.metadata.address, programProvider);
 
-export const HomeView: React.FC = ({ }) => {
 
+
+const getProvider = React.useCallback(() => {
+  
   const wallet = useWallet();
 
+  return new AnchorProvider(connection, wallet, {
+    commitment: 'processed',
+    preflightCommitment: 'processed',
+  });
+}, [])
+
+
+// TODO be aware that while youre debugging this, you might be conflating the wallet address and the creator address
+
+
+export const HomeView: React.FC = ({ }) => {
+  
+  const wallet = useWallet();
+  
   const [organisms, setOrganisms] = React.useState([] as _Organism[]);
+
+  const theProgram = new Program(IDL, programIdl.metadata.address, getProvider());
 
   React.useEffect(() => {
     retrieveAllOrganisms();
@@ -41,8 +59,8 @@ export const HomeView: React.FC = ({ }) => {
       const [org] = findProgramAddressSync([
         utils.bytes.utf8.encode("organism"),
         utils.bytes.utf8.encode(creatorAccount.numOrganisms.toString()),
-        programProvider.wallet.publicKey.toBuffer()
-      ], program.programId) 
+        wallet.publicKey.toBuffer()
+      ], theProgram.programId) 
 
       const organismAccount: _Organism = await theProgram.account.organism.fetch(org);
       setOrganisms(prev => [...prev, organismAccount]);
@@ -51,6 +69,7 @@ export const HomeView: React.FC = ({ }) => {
 
   const getBlockhash = async (): Promise<String> => {
     const blockhash = await connection.getRecentBlockhash();
+
     return blockhash.blockhash;
   }
 
@@ -59,7 +78,7 @@ export const HomeView: React.FC = ({ }) => {
       utils.bytes.utf8.encode("organism"),
       utils.bytes.utf8.encode(index.toString()),
       wallet.publicKey.toBuffer()
-    ], program.programId) 
+    ], theProgram.programId) 
   }
 
   const handleEvolve = async (organism: _Organism) => {
@@ -77,7 +96,7 @@ export const HomeView: React.FC = ({ }) => {
 
     theProgram.methods.createLife(blockhash).accounts({
       creator: wallet.publicKey,
-      user: programProvider.wallet.publicKey,
+      user: wallet.publicKey,
       systemProgram: anchor.web3.SystemProgram.programId
     }).transaction();
   }
@@ -89,7 +108,7 @@ export const HomeView: React.FC = ({ }) => {
 
     theProgram.methods.createOrganism(blockhash).accounts({
       creator: wallet.publicKey,
-      user: programProvider.wallet.publicKey,
+      user: wallet.publicKey,
       systemProgram: anchor.web3.SystemProgram.programId,
       organism: _organism
     }).transaction();
@@ -99,8 +118,10 @@ export const HomeView: React.FC = ({ }) => {
 
     <div className="h-full relative">
         {organisms.map((organism: _Organism, i: number) => {
+
+          console.log(organism.x);
           return (
-            <div key={i} className={`absolute`}>
+            <div key={i} className={"absolute"} style={{top: organism.y, left: organism.x}}>
               <Organism handleEvolve={handleEvolve} organism={organism} />
             </div>
           )
@@ -114,7 +135,7 @@ export const HomeView: React.FC = ({ }) => {
             onClick={createOrganism}
           />
           <PrettyButton
-            text="Create Creator"
+            text="Create creator"
             onClick={createLife}
           />
         </div>
