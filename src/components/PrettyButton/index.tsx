@@ -14,7 +14,7 @@ export const PrettyButton = ({text, onClick, alwaysOn = false}) => {
                 rounded-lg blur opacity-20 group-hover:opacity-100 transition duration-1000 group-hover:duration-200 animate-tilt"></div>
                     <button
                         className="group w-60 m-2 btn animate-pulse bg-gradient-to-br from-indigo-500 to-fuchsia-500 hover:from-white hover:to-purple-300 text-black"
-                        onClick={onClick} disabled={!alwaysOn || !wallet?.publicKey}
+                        onClick={onClick} disabled={!alwaysOn && !wallet?.publicKey}
                     >
                         {text}
                     </button>

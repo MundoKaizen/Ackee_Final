@@ -24,7 +24,7 @@ const connection = new web3.Connection("https://api.devnet.solana.com", {
 const IDL = JSON.parse(JSON.stringify(programIdl))
 
 
-const getProvider = React.useCallback(() => {
+const getProvider = () => {
   
   const wallet = useWallet();
 
@@ -32,7 +32,7 @@ const getProvider = React.useCallback(() => {
     commitment: 'processed',
     preflightCommitment: 'processed',
   });
-}, [])
+}
 
 
 // TODO be aware that while youre debugging this, you might be conflating the wallet address and the creator address
