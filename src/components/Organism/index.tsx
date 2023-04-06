@@ -18,30 +18,34 @@ export const Organism: React.FC<Props> = ({ organism, handleEvolve } : Props) =>
 
     return (
         <div className="relative cursor-pointer" onClick={() => toggleSelected(!selected)}>
-            <div className={
-                    `justify-center items-center border border-white h-[${organism.size}px] w-[${organism.size}px] 
-                    rounded-[5px] p-2`
-                }
+            <div 
+                className={`relative justify-center items-center border border-white p-2`}
+                style={{height: organism.size + "px", width: organism.size + "px", borderRadius: Math.ceil(organism.size) + "px"}}
             >
-                <p>{organism.address.toBase58().substring(0, 1)}</p>
+                {/* <p>{organism.address.toBase58().substring(0, 1)}</p> */}
                 {selected && <div className="absolute bottom-0 right-0 border-b-2 border-b-white w-full origin-right rotate-[225deg]" />} 
                 {selected && 
-                    <div className={`border-white border absolute h-[150px] w-[150px] bottom-[-150px] right-[-150px] p-2 rounded bg-[#1e0b3a]`}>
-                        <div className="mb-2 flex flex-row">
-                            <p className="text-white font-medium mr-1 text-xs">Address: </p>
-                            <p className="text-white text-xs">{formatAddress(organism.address.toBase58())}</p>
-                        </div>
-                        <div className="mb-2 flex flex-row">
-                            <p className="text-white font-medium mr-1 text-xs">Owner: </p>
-                            <p className="text-white text-xs">{formatAddress(organism.creatorAddress.toBase58())}</p>
-                        </div>
-                        <div className="mb-2 flex flex-row">
-                            <p className="text-white font-medium mr-1 text-xs">Size: </p>
-                            <p className="text-white text-xs">{organism.size}</p>
-                        </div>
-                        <div className="mb-2 flex flex-row">
-                            <p className="text-white font-medium mr-1 text-xs">Birthdate: </p>
-                            <p className="text-white text-xs">{organism.birthday}</p>
+                    <div 
+                        className={`border-white border absolute p-2 rounded bg-[#1e0b3a] flex flex-col justify-between`}
+                        style={{height: "150px", width: "150px", bottom: -(150 + organism.size) + "px", right: -(150 + organism.size) + "px"}}
+                    >
+                        <div>
+                            <div className="mb-2 flex flex-row">
+                                <p className="text-white font-medium mr-1 text-xs">Address: </p>
+                                {/* <p className="text-white text-xs">{formatAddress(organism.address.toBase58())}</p> */}
+                            </div>
+                            <div className="mb-2 flex flex-row">
+                                <p className="text-white font-medium mr-1 text-xs">Owner: </p>
+                                {/* <p className="text-white text-xs">{formatAddress(organism.creatorAddress.toBase58())}</p> */}
+                            </div>
+                            <div className="mb-2 flex flex-row">
+                                <p className="text-white font-medium mr-1 text-xs">Size: </p>
+                                <p className="text-white text-xs">{organism.size}</p>
+                            </div>
+                            <div className="mb-2 flex flex-row">
+                                <p className="text-white font-medium mr-1 text-xs">Birthdate: </p>
+                                <p className="text-white text-xs">{organism.birthday}</p>
+                            </div>
                         </div>
 
                         <div className="flex flex-row">
@@ -51,7 +55,7 @@ export const Organism: React.FC<Props> = ({ organism, handleEvolve } : Props) =>
                                     <button
                                         className="group rounded px-2 w-30 animate-pulse bg-gradient-to-br from-indigo-500 to-fuchsia-500 hover:from-white hover:to-purple-300 text-black"
                                         onClick={() => handleEvolve(organism)}
-                                        disabled={wallet?.publicKey?.toBase58() !== organism.creatorAddress.toBase58()}
+                                        // disabled={wallet?.publicKey?.toBase58() !== organism.creatorAddress.toBase58()}
                                     >
                                         Evolve
                                     </button>
